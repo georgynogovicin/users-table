@@ -20,13 +20,14 @@ const SearchBar = ({ setSearchValue }) => {
     
     return (
         <div className='row'>
-            <form onSubmit={handleSubmit} onReset={handleReset}>
-                <div className='mb-3'>
-                    <label htmlFor='search' className='form-label'>Search</label>
-                    <input type='text' className='form-control' placeholder='Search' id='search' value={inputValue} onChange={handleChange} />
+            <form onSubmit={handleSubmit} onReset={handleReset} className='col gy-3'>
+                <div className='mb-4'>
+                    <input type='text' className='form-control' placeholder='Search' value={inputValue} onChange={handleChange} />
                 </div>
-                <button type='submit' className='btn btn-primary'>Search</button>
-                <button type='reset' className='btn btn-danger' style={{marginLeft: '5px'}}>Clear</button>
+                <div className='md-col-20'>
+                    <button type='submit' className='btn btn-primary'>Search</button>
+                    <button type='reset' className='btn btn-danger'>Clear</button>
+                </div>
             </form>
         </div>
     )

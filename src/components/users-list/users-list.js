@@ -28,7 +28,6 @@ const UsersList = ({searchValue}) => {
     
     const items = sortedUsers.map(item => {
         const {id, ...props } = item;
-        console.log(item)
         return <UserItem key={id} {...props} id={id} />
     }).slice(0, itemsPerPage);
     
