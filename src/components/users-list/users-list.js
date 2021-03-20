@@ -1,59 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import UserItem from '../user-item';
-import ItemsPerPage from '../items-per-page';
-import data from '../../db';
 
-const UsersList = ({searchValue}) => {
-    const [ users, setUsers ] = useState([]);
-    const [ sortedUsers, setSortedUsers ] = useState(users);
-    const [ itemsPerPage, setItemsPerPage ] = useState(10);
-
-    useEffect(() => {
-        setUsers(JSON.parse(data));
-    }, [])
-
-    useEffect(() => {
-        const newArr = searchHandler(searchValue, users);
-        setSortedUsers(newArr);
-    }, [searchValue, users])
-
-    const searchHandler = (value, arr) => {
-        return arr.filter(item => {
-            const values = Object.values(item);
-            const regExp = new RegExp(value);
-            return values.some(item => regExp.test(item));
-        })
-    }
-    
-    
-    const items = sortedUsers.map(item => {
-        const {id, ...props } = item;
-        return <UserItem key={id} {...props} id={id} />
-    }).slice(0, itemsPerPage);
+const UsersList = ( {users, onSort, sortBy} ) => {
+    const items = users.map(item => {
+        const { id, ...props } = item;
+        return (<UserItem key={id} {...props} id={id} />)
+    });
     
     return (
-        <>
-        <div className='row'>
-               <ItemsPerPage setItemsPerPage={setItemsPerPage} /> 
-        </div>
-        <div className='row'>
-            <table className='table'>
+        <div className='row mt-4'>
+            <table className='table table-striped'>
                 <thead>
                     <tr>
-                        <th scope='col'>ID</th>
-                        <th scope='col'>Имя</th>
-                        <th scope='col'>Фамилия</th>
-                        <th scope='col'>Email</th>
-                        <th scope='col'>Номер</th>
+                        <th scope='col'><button type='button' className={`btn btn-outline-secondary ${sortBy === 'id' && 'active'}`} onClick={() => onSort('id')}>ID</button></th>
+                        <th scope='col'><button type='button' className={`btn btn-outline-secondary ${sortBy === 'firstName' && 'active'}`} onClick={() => onSort('firstName')}>Name</button></th>
+                        <th scope='col'><button type='button' className={`btn btn-outline-secondary ${sortBy === 'lastName' && 'active'}`} onClick={() => onSort('lastName')}>Last Name</button></th>
+                        <th scope='col'><button type='button' className={`btn btn-outline-secondary ${sortBy === 'email' && 'active'}`} onClick={() => onSort('email')}>Email</button></th>
+                        <th scope='col'><button type='button' className={`btn btn-outline-secondary ${sortBy === 'phone' && 'active'}`} onClick={() => onSort('phone')}>Phone number</button></th>
                     </tr>
                 </thead>
                 <tbody>
                     {items}
                 </tbody>
-                
             </table>
         </div>
-        </>
     )
 }
 

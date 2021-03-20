@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SearchBar = ({ setSearchValue }) => {
+const SearchBar = ({ onSearchSubmit }) => {
     const [ inputValue, setInputValue ] = useState('');
 
     const handleChange = (event) => {
@@ -10,26 +10,21 @@ const SearchBar = ({ setSearchValue }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setSearchValue(inputValue)
+        onSearchSubmit(inputValue)
     }
 
     const handleReset = () => {
         setInputValue('');
-        setSearchValue('');
     }
     
     return (
-        <div className='row'>
-            <form onSubmit={handleSubmit} onReset={handleReset} className='col gy-3'>
-                <div className='mb-4'>
-                    <input type='text' className='form-control' placeholder='Search' value={inputValue} onChange={handleChange} />
-                </div>
-                <div className='md-col-20'>
-                    <button type='submit' className='btn btn-primary'>Search</button>
-                    <button type='reset' className='btn btn-danger'>Clear</button>
-                </div>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit} onReset={handleReset}>
+            <input type='text' className='form-control mt-4' placeholder='Search' value={inputValue} onChange={handleChange} />
+            <div className='col mt-4'>
+                <button type='submit' className='btn btn-primary' onClick={handleSubmit}>Search</button>
+                <button type='reset' className='btn btn-danger mx-4' onClick={handleReset} >Clear</button>
+            </div>
+        </form>
     )
 }
 

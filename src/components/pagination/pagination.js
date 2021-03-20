@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Pagination = () => {
+const Pagination = ({ pageCount, currentPage, onChangePage }) => {
     
+    const changePageHandler = (page) => {
+        onChangePage(page)
+    }
+    
+    let pageItems = [];
+    for(let i = 1; i < pageCount + 1; i++) {
+        const item = (<li key={i} className={`page-item ${i === currentPage && 'active'}`}><button className="page-link" onClick={() => changePageHandler(i)}>{i}</button></li>)
+        pageItems.push(item)
+    }
     
     return (
         <nav>
             <ul className='pagination'>
-                <li className='page-item'>
-                    <button type='button'className='page-link'><span aria-hidden='true'>&laquo;</span></button>
-                </li>
-                <li className="page-item"><button className="page-link">1</button></li>
-                <li className="page-item"><button className="page-link">3</button></li>
-                <li className="page-item"><button className="page-link">4</button></li>
-                <li className='page-item'>
-                    <button type='button'className='page-link'><span aria-hidden='true'>&raquo;</span></button>
-                </li>
+                {pageItems}
             </ul>
         </nav> 
     )
