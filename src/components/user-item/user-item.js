@@ -1,13 +1,14 @@
 import React from 'react';
 
-const UserItem = ({firstName, lastName, email, phone, id}) => {
+const UserItem = (props) => {
+    
+    const items = props.activeFields.map(item => {
+        return ( <td key={props[item]}>{props[item]}</td> )
+    })
+
     return (
         <tr>
-            <th scope='row'>{id}</th>
-            <th>{firstName}</th>
-            <th>{lastName}</th>
-            <th>{email}</th>
-            <th>{phone}</th>
+            {items}
         </tr>
     )
 }
