@@ -1,2 +1,0 @@
-const testData = [...Array(150).keys()].map(i => ({ id: (Math.floor(Math.random() * 10000) + i), firstName: `${i + 1} Name`, lastName: `${i + 1} Surname`, email: `${i+1}email@${i+1}mail.com`, phoneNumber: `${Math.floor(Math.random() * 100000000)}` }));
-export default JSON.stringify(testData.reverse());
