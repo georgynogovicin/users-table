@@ -31,7 +31,6 @@ const ItemsPerPage = ({ setItemsPerPage }) => {
     );
   });
 
-  // return (<li key={item}><button type='button' className='dropdown-item' onClick={() => onItemClickHandler(item)} >{item} items</button></li>)
   return (
     <div ref={ref} className="col-1 dropdown">
       <button

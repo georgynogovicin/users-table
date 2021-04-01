@@ -1,5 +1,5 @@
-/*eslint-disable */
 import React from 'react';
+import PropTypes from 'prop-types';
 import UserItem from '../user-item';
 
 const UsersList = ({ users, onSort, sortBy, colons }) => {
@@ -34,6 +34,17 @@ const UsersList = ({ users, onSort, sortBy, colons }) => {
       </table>
     </div>
   );
+};
+
+UsersList.defaultProps = {
+  sortBy: 'firstName',
+};
+
+UsersList.propTypes = {
+  users: PropTypes.instanceOf(Array).isRequired,
+  onSort: PropTypes.func.isRequired,
+  sortBy: PropTypes.string,
+  colons: PropTypes.instanceOf(Array).isRequired,
 };
 
 export default UsersList;

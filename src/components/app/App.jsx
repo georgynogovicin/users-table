@@ -42,7 +42,7 @@ function App() {
   //  Colons view
   const [colons, setColons] = useState(null);
 
-  //  Get random users & sort by name
+  //  Get random users, sort by name & set table headers
   const getData = async () => {
     const res = await fetch(`https://my.api.mockaroo.com/users.json?key=3c3a0c40`);
     const data = await res.json();
