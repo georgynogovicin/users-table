@@ -1,9 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentPage } from '../../redux/actions/actions';
 
-const Pagination = ({ pageCount, currentPage, onChangePage }) => {
+const Pagination = () => {
+  const dispatch = useDispatch();
+  const currentPage = useSelector((state) => state.pagination.currentPage);
+  const itemsPerPage = useSelector((state) => state.itemsPerPage);
+  const usersLength = useSelector((state) => state.users.usersList.length);
+  const pageCount = useSelector((state) => state.pagination.pageCount);
+
   const changePageHandler = (page) => {
-    onChangePage(page);
+    const start = (page - 1) * itemsPerPage;
+    const finish = Math.min(start + itemsPerPage - 1, usersLength - 1);
+    const payload = {
+      page,
+      start,
+      finish,
+    };
+    dispatch(setCurrentPage(payload));
   };
 
   const pageItems = [];
@@ -23,17 +37,6 @@ const Pagination = ({ pageCount, currentPage, onChangePage }) => {
       <ul className="pagination">{pageItems}</ul>
     </nav>
   );
-};
-
-Pagination.defaultProps = {
-  pageCount: 1,
-  currentPage: 1,
-};
-
-Pagination.propTypes = {
-  pageCount: PropTypes.number,
-  currentPage: PropTypes.number,
-  onChangePage: PropTypes.func.isRequired,
 };
 
 export default Pagination;

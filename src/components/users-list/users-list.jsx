@@ -1,28 +1,41 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { orderBy } from 'lodash';
+import { sortPageOfUsers } from '../../redux/actions/actions';
 import UserItem from '../user-item';
 
-const UsersList = ({ users, onSort, sortBy, colons }) => {
+const UsersList = () => {
+  const users = useSelector((state) => state.users.pageOfUsers);
+  const sortBy = useSelector((state) => state.sort.sortBy);
+  const sortDirection = useSelector((state) => state.sort.sortDirection);
+  const colons = useSelector((state) => state.tableHeaders);
+
+  const dispatch = useDispatch();
+
+  const onSortHandler = (label) => {
+    const direction = sortDirection === 'asc' ? 'desc' : 'asc';
+    const sortedPage = orderBy(users, label, direction);
+    dispatch(sortPageOfUsers(label, sortedPage));
+  };
+
   const items = users.map((item) => {
     const { id, ...props } = item;
     return <UserItem key={id} {...props} id={id} colons={colons} />;
   });
 
-  const headers = colons.map((item) => {
-    return (
-      item.status && (
-        <th key={item.label} scope="col">
-          <button
-            type="button"
-            className={`btn btn-outline-secondary ${sortBy === item.label && 'active'}`}
-            onClick={() => onSort(item.label)}
-          >
-            {item.label.toUpperCase()}
-          </button>
-        </th>
-      )
-    );
-  });
+  const headers = colons
+    .filter(({ status }) => status)
+    .map((item) => (
+      <th key={item.label} scope="col">
+        <button
+          type="button"
+          className={`btn btn-outline-secondary ${sortBy === item.label && 'active'}`}
+          onClick={() => onSortHandler(item.label)}
+        >
+          {item.label.toUpperCase()}
+        </button>
+      </th>
+    ));
 
   return (
     <div className="row mt-4">
@@ -34,17 +47,6 @@ const UsersList = ({ users, onSort, sortBy, colons }) => {
       </table>
     </div>
   );
-};
-
-UsersList.defaultProps = {
-  sortBy: 'firstName',
-};
-
-UsersList.propTypes = {
-  users: PropTypes.instanceOf(Array).isRequired,
-  onSort: PropTypes.func.isRequired,
-  sortBy: PropTypes.string,
-  colons: PropTypes.instanceOf(Array).isRequired,
 };
 
 export default UsersList;

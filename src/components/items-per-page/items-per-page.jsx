@@ -1,15 +1,25 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setItemsPerPage } from '../../redux/actions/actions';
 import UseOutsideClick from '../use-outside-click';
 
-const ItemsPerPage = ({ setItemsPerPage }) => {
+const ItemsPerPage = () => {
   const [isActive, setIsActive] = useState(false);
+
+  const dispatch = useDispatch();
+  const activeField = useSelector((state) => state.itemsPerPage);
+  const usersLength = useSelector((state) => state.users.usersList.length);
 
   const ref = useRef(null);
 
   const onItemClickHandler = (value) => {
     setIsActive(false);
-    setItemsPerPage(value);
+    const pageCount = Math.ceil(usersLength / value);
+    const payload = {
+      value,
+      pageCount,
+    };
+    dispatch(setItemsPerPage(payload));
   };
 
   UseOutsideClick(ref, () => setIsActive(false));
@@ -24,7 +34,7 @@ const ItemsPerPage = ({ setItemsPerPage }) => {
             type="radio"
             name="flexRadioDefault"
             onChange={() => onItemClickHandler(item)}
-            defaultChecked={item === 10}
+            checked={activeField === item}
           />
         </label>
       </div>
@@ -50,10 +60,6 @@ const ItemsPerPage = ({ setItemsPerPage }) => {
       </ul>
     </div>
   );
-};
-
-ItemsPerPage.propTypes = {
-  setItemsPerPage: PropTypes.func.isRequired,
 };
 
 export default ItemsPerPage;

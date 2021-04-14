@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { onSearchSubmit, onSearchReset } from '../../redux/actions/actions';
 
-const SearchBar = ({ onSearchSubmit, onSearchReset }) => {
+const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
+
+  const itemsPerPage = useSelector((state) => state.itemsPerPage);
+  const usersLength = useSelector((state) => state.users.usersList.length);
+
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -11,12 +17,17 @@ const SearchBar = ({ onSearchSubmit, onSearchReset }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSearchSubmit(inputValue);
+    dispatch(onSearchSubmit(inputValue));
   };
 
   const handleReset = () => {
+    const pages = Math.ceil(usersLength / itemsPerPage);
+    const payload = {
+      pages,
+      itemsPerPage,
+    };
     setInputValue('');
-    onSearchReset();
+    dispatch(onSearchReset(payload));
   };
 
   return (
@@ -40,11 +51,6 @@ const SearchBar = ({ onSearchSubmit, onSearchReset }) => {
       </form>
     </div>
   );
-};
-
-SearchBar.propTypes = {
-  onSearchSubmit: PropTypes.func.isRequired,
-  onSearchReset: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

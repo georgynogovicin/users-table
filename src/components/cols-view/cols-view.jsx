@@ -1,13 +1,18 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTableHeaders } from '../../redux/actions/actions';
 import UseOutsideClick from '../use-outside-click';
 
-const ColsView = ({ colons, onChangeColons }) => {
+const ColsView = () => {
   const [popIsActive, setPopIsActive] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const colons = useSelector((state) => state.tableHeaders);
 
   const onChangeHandler = (label) => {
     const newColons = colons.map((item) => (item.label === label ? { ...item, status: !item.status } : item));
-    onChangeColons(newColons);
+    dispatch(setTableHeaders(newColons));
   };
 
   const ref = useRef(null);
@@ -50,17 +55,6 @@ const ColsView = ({ colons, onChangeColons }) => {
       </div>
     </div>
   );
-};
-ColsView.defaultProps = {
-  colons: {
-    label: 'firstName',
-    status: true,
-  },
-};
-
-ColsView.propTypes = {
-  colons: PropTypes.instanceOf(Array),
-  onChangeColons: PropTypes.func.isRequired,
 };
 
 export default ColsView;
